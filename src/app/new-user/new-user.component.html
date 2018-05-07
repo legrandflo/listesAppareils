@@ -1,0 +1,58 @@
+<!--formulaire pour ajouter un utilisateur a la liste -->
+<!-- on utilise FormGroup -->
+
+<!--dans new-user.component.ts
+    creation d'un objet de type FormGroup et initialisation dans methode initForm avec FormBuilder-->
+<!--dans new-user.component.html ci-dessous
+    creation du template du formulaire-->
+<!--dans new-user.component.ts
+    creation methode onSubmitForm pour recuperer les donnees du formulaire, les mettre dans le tableau users,
+     et rediriger l'utilisateur vers le composant liste des users-->
+<!--validation du formulaire :
+    validators dans le .ts pour les champs
+  [disabled]="userForm.invalid" pour le formulaire-->
+<!--dans app.module.ts
+      declarer le NewUserComponent dans declarations
+      ajout d'une route new-user et import du composent-->
+<!--ajout des hobbies avec controle des validators vois ci-dessous-->
+
+
+
+<div class="col-sm-8 col-sm-offset-2">
+  <!-- on utilise plus une reference locale #..., on utilise formGroup qu'on lie avec l'objet userForm créé dans ts
+    pas d'argument dans onSubmitForm-->
+  <form [formGroup]="userForm" (ngSubmit)="onSubmitForm()">
+    <div class="form-group">
+      <label for="firstName">Prénom</label>
+      <!-- formControlName doit correspondre au nom de objet userForm créé dans .ts-->
+      <input type="text" id="firstName" class="form-control" formControlName="firstName">
+    </div>
+    <div class="form-group">
+      <label for="lastName">Nom</label>
+      <input type="text" id="lastName" class="form-control" formControlName="lastName">
+    </div>
+    <div class="form-group">
+      <label for="email">Adresse mail</label>
+      <input type="text" id="email" class="form-control" formControlName="email">
+    </div>
+    <div class="form-group">
+      <label for="drinkPreference">Quelle boisson préférez-vous?</label>
+      <select id="drinkPreference" class="form-control" formControlName="drinkPreference">
+        <option value="Coca">Coca</option>
+        <option value="Pepsi">Pepsi</option>
+      </select>
+    </div>
+    <!-- formArrayName pour faire le lien avec le tableau hobbies du ts-->
+    <div formArrayName="hobbies">
+      <h3>Vos hobbies</h3>
+      <!-- getHobbies retourne le FormArray et .controls  accede a l'array des controls dans le formArray
+        donc boucle sur chaque control du formArray-->
+      <div class="form-group" *ngFor="let hobbyControl of getHobbies().controls ; let i = index">
+        <input type="text" class="form-control" [formControlName]="i">
+      </div>
+      <!-- type button pour pas soumettre le formulaire-->
+      <button type="button" class="btn btn-success" (click)="onAddHobby()">Ajouter un hobby</button>
+    </div>
+    <button type="submit" class="btn btn-primary" [disabled]="userForm.invalid">Soumettre</button>
+  </form>
+</div>

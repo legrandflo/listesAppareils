@@ -1,0 +1,38 @@
+<!-- avant = <li class="list-group-item" -- classe statique>
+<!--classe dynamique : on peut utilisé ngClass pour definir une class pour élément et lui apporter des conditions -->
+<!-- true pour que la classe soit defini toujours defini
+   on ajoute des calsses bootstrap avec des conditions-->
+<li [ngClass]="{'list-group-item':true,
+                'list-group-item-success':appareilStatus === 'allumé',
+                'list-group-item-danger':appareilStatus === 'éteint'}">
+  <!--plus besoin ICI-->
+  <!-- ngIF :creation carre rouge quand appareil status est eteint-->
+  <!--  <div style="width:20px;height:20px;background-color:red;"
+      *ngIf="appareilStatus === 'éteint'">
+  </div>
+-->
+
+  <!--interpolation avec variable ou methode-->
+  <!--ngStyle pour modifier le style d'un element selon une condition
+  ici changement couleur selon la methode getColor-->
+  <h4 [ngStyle]="{color:getColor()}">Appareil : {{ appareilName}} -- Status : {{ getStatus() }} -- ID : {{appareilId}}</h4>
+  <!--ajout d'un lien pour navigation vers 1 appareil grace a son id-->
+  <!--pas besoin du appareil/ avant appareilId car appareil.component est appeler dans appareil-view.component 
+    qui a deja un routerlink /appareil et boucle sur le tableau-->
+  <a [routerLink]="[appareilId]">Détails</a>
+  <!--OU
+  <a routerLink="{{appareilId}}">Details</a>
+  -->
+
+  <!--plus besoin ici-->
+  <!-- two way binding avec [()]
+  Quand on modifie le contenu de input ca change le contenu de appareilName et l'affiche dans h4
+Modifcation dans 2 sens dans input <-> dans la variable-->
+  <!--  <input type="text" class="text form-control" [(ngModel)]="appareilName">-->
+
+  <!--2 boutons pour allumer et eteindre 1 appareil-->
+  <!--[disabled]="appareilStatus === 'allumé'" bouton desactiver si deja allumé-->
+  <button class="btn btn-success" (click)="onSwitchOn()" [disabled]="appareilStatus === 'allumé'">Allumer</button>
+  <button class="btn btn-danger" (click)="onSwitchOff()" [disabled]="appareilStatus === 'éteint'">Eteindre</button>
+
+</li>

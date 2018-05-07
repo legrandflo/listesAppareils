@@ -1,0 +1,33 @@
+<!--formulaire avec methode template -->
+<!--on utilise ngForm-->
+
+<!--fonction onSubmit dans edit-appareil.component.ts-->
+<!--ajouter une route path dans app.module.ts et l'appeler dans app.component.ts-->
+<!-- obliger remplissage des champs grace a required , [ngModel]="defaultOnOff" et [disabled]="f.invalid" et -->
+
+<!--utiliser les donnees du formulaire :
+ on les met dans onsubmit de edit-appareil.component.ts
+puis dans appareils.service on crée addAppareil pour les ajouter a la liste des appareils qui est dans service
+puis on utilise le service dans edit-appareil.component.ts avec methode addAppareil
+ainsi que le router et methode navigate pour rediriger utilisateur vers la liste des appareils qd le formulaire est rempli-->
+<div class="row">
+  <div class="col-sm-8 col-sm-offset-2">
+    <!--ngSubmit va avec le type submit du button, le f est le contenu du formulaire que l'on passe a la methode onSubmit-->
+    <form (ngSubmit)="onSubmit(f)" #f="ngForm">
+      <div class="form-group">
+        <label for="name">Nom de l'appareil</label>
+        <!--name="name" et ngModel, le ngModel va enregistrer le champ name...required pour obliger le remplissage du champ-->
+        <input type="text" id="name" class="from-control" name="name" ngModel required>
+      </div>
+      <div class="form-group">
+        <label for="status"> Etat de l'appareil</label>
+        <select id="status" class="form-control" name="status" [ngModel]="defaultOnOff">
+          <option value="allumé">Allumé</option>
+          <option value="éteint">Eteint</option>
+        </select>
+      </div>
+      <!--[disabled]="f.invalid" pour desactivé le bouton tant que le formulaire f n'est pas rempli-->
+      <button type="submit" class="btn btn-primary" [disabled]="f.invalid">Enregister</button>
+    </form>
+  </div>
+</div>

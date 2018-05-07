@@ -1,0 +1,110 @@
+<!--ancien contenu de app.component.html... mis ici pour faire le routing-->
+
+<!--Mise en place du backend avec BDD Firebase-->
+<!--Voir creation de la base dans firebase en bas de page-->
+<!-- 1 -- dans app.module.ts imports HttpClientModule dans les modules et en haut-->
+    <!-- dans appareil.service.ts
+        import de injectable puis ajout de Injectable()
+        import  HttpClient puis le mettre dans constructor
+        creation methode pour enregistrer donnes sur serveur saveAppareilsToServer()
+            avec adresse de la base dans firebase et post-->
+    <!--dans composant qui est appeler en 1er ICI (appareil-view.component.html)
+        creation bouton enregistrement avec methode-->
+    <!--dans appareil-view.component.ts
+        creation de la fonction lié au bouton onSave-->
+    <!--quand on clique sur enregistrer ca crée une table appareils dans la base avec les infos de la liste appareils
+            voir dans firebase
+            PB si on clique 2 fois sur enregistrer ca rajoute la liste une autre fois
+              pour eviter ca il faut utiliser put (dans service)a la place de post (ca ecrase le contenu dans bdd si ce qu'il a est identique a ce qu'on envoie-->
+<!-- 1 --après envoi vers la BDD, La réception des donnees de la base...methode get-->
+    <!--dans appareils.service.ts
+        creation methode getAppareilsFromServer avec methode get et url de la BDD-->
+    <!--dans appareil-view.component.html
+        on crée un bouton chargeravec une fonction onFetch lié à la focntion crée dans le service-->
+    <!-- dans appareil-view.component.ts
+          creation de la fonction onFetch-->
+    <!-- Ca donne...
+          Quand on clique sur charger :un message dans la console
+          et si on modifie l'etat d'un appareil a l'écran il remet ce qui est enregistré dans la base-->
+<!--MAINTENANT ON PEUT SUPPRIMER LE CONTENU DE LA LISTE appareils dans appareils.service.ts on va recuperer les donnees du serveur-->
+<!--quand on modifie etat d'un appareil, puis enregistrer si on se deconnecte et on se reconnecte quand on charge le nouvel etat est pris en compte car enregistrer dans la base-->
+<!--AUTOMATISER LA RECUPERATION DES DONNEES DE LA BASE-->
+      <!--en mettant la methode getAppareilsFromServer dans ngOnInit du service
+          Ca permmet aussi integrer les donnees automatiquement  dans BDD qd on les modifie-->
+
+<div class="col-xs-12">
+        
+    <h2>Mes appareils</h2>
+    <!--pipe date sans rien: Mar 16, 2018, short : 3/16/18, 2:17 PM, yMMMMEEEEd : 2018MarchFriday16 -->
+    <!--pipe uppercase pour MAJUSCULE ne pas le mettre avant date car lastUpdate n'est pas une chaine de caractere-->
+    <p>Mis à jour : {{ lastUpdate | date: 'yMMMMEEEEd' | uppercase }}</p>
+    <!--avec une promise defini dans le ts...affichage au bout de 2s utilisé async avant les autres-->
+    <p>Mis à jour : {{ lastUpdate2 | async | date: 'yMMMMEEEEd' | uppercase }}</p>
+
+    <ul class="list-group">
+      <!-- appareilName est input defini dans appareil.component.ts
+        appareilOne ...defini dans app.component.ts
+      pour appareilStatus le contenu est defini ici...attention ""+''-->
+      <!--sans ngFor
+        <app-appareil [appareilName]="appareilOne" [appareilStatus]="'éteint'"></app-appareil>
+      <app-appareil [appareilName]="appareilTwo" [appareilStatus]="'allumé'"></app-appareil>
+      <app-appareil [appareilName]="appareilThree" [appareilStatus]="'éteint'"></app-appareil>
+      -->
+      <!--avec ngFor et tableau objet appareils du ts-->
+      <!--let i = index ajoute un index a chaque appareil qd le for passe on le passe dans appareil.component.ts grace a indexOfAppareil -->
+      <app-appareil *ngFor="let appareil of appareils; let i = index"
+                    [indexOfAppareil]="i"
+                    [appareilName]="appareil.name" 
+                    [appareilStatus]="appareil.status"
+                    [appareilId] = "appareil.id">
+      </app-appareil>
+    </ul>
+    <!--[] lié à une variable modifiés dans ts qui change  html
+        () lié à evenement du html(click) qui va  vers methode du ts-->
+
+    <!--disabled HTML2 desactive le bouton,[]pour lier disabled avec isAuth-->
+    <!--[disabled]="isAuth" = si isAuth est vrai  alors bouton desactivé donc !
+    <!--bouton desactivé si utilisateur pas authentifié-->
+    <button class="btn btn-success" 
+            [disabled]="!isAuth"
+            (click)="onAllumer()">Tout allumer</button>
+    <button class="btn btn-danger" 
+            [disabled]="!isAuth"
+            (click)="onEteindre()">Tout éteindre</button>
+    
+    <!--bouton pour enregistrement dans la BDD firebase-->
+    <button class="btn btn-primary"
+            (click)="onSave()">Enregistrer les appareils</button>
+    <!--bouton pour recuperer les donnees dans la BDD firebase-->
+    <button class="btn btn-primary"
+            (click)="onFetch()">Récupérer les appareils</button>
+
+  </div>
+
+
+  <!--Base de donnees dans firebase-->
+  <!-- firebase.google.com
+      . s'identifier avec compte google
+      . creer un nouveau projet
+          * accéder a la console
+          * ajouter un projet
+              - mettre un nom (httpClient-demo ICI)
+              - le pays
+              - creer un projet
+              - continuer
+      . préparer le backend
+          * cliquer sur develop-database-realtime database - premier pas
+          * modifier regle d'acces dans regles
+            (au depart il y a un parametre auth pour identification)
+            on met {
+                    "rules": {
+                      ".read":"true",
+                      ".write":"true"
+                    }
+                  }
+            = ACCES A TOUS
+            publier
+          *revenir sur donnees
+            copier url
+            ICI : https://httpclient-demo-b396a.firebaseio.com/
+-->
