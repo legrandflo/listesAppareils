@@ -6,6 +6,8 @@
 
 git clone https://github.com/legrandflo/listesAppareils.git
 
+cd listesAppareils
+
 npm install
 
 ng serve
