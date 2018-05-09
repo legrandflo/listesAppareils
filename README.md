@@ -12,6 +12,7 @@ npm install
 
 ng serve
 
-Le projet fonctionne avec une base crée dans firebase.
-Vous pouvez utilisé en crée une perso et intégrer son url dans le service
+Le projet fonctionne avec une base créée dans firebase.
+
+Vous pouvez en créer une perso et intégrer son url dans le service
 
